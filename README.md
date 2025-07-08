@@ -46,7 +46,7 @@ export CORE_PEER_ADDRESS=localhost:7051
 ## Invoke-Create Medicine
 
 ```bash
-peer chaincode invoke \
+ peer chaincode invoke \
   -o localhost:7050 \
   --ordererTLSHostnameOverride orderer.example.com \
   --tls --cafile $ORDERER_CA \
@@ -54,7 +54,9 @@ peer chaincode invoke \
   -n Farma-Network \
   --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT \
   --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT \
-  -c '{"function":"CreateMedicine","Args":["MED-002", "Paracetamol 500", "Sun Pharma", "2024-06-01", "2026-06-01", "45", "200"]}'
+  -c '{"function":"CreateMedicine","Args":["MED-002", "Paracetamol 500", "Sun Pharma", "2024-06-01", "2026-06-01", "45","200"]}'
+
+
 
 ```
 ## Query- Get Medicine by ID
@@ -69,3 +71,32 @@ peer chaincode query \
   -c '{"Args":["MedicineContract:GetAllMedicines"]}'
 ```
 
+## Environment variables for Org2
+```bash
+export CORE_PEER_LOCALMSPID=Org2MSP
+
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+
+export CORE_PEER_ADDRESS=localhost:9051
+```
+
+## Environment variables for Org3:
+```bash
+export CORE_PEER_LOCALMSPID=Org3MSP
+
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
+
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
+
+export CORE_PEER_ADDRESS=localhost:11051
+```
+
+## Query for gell all medicine by ORG-3
+```bash
+ peer chaincode query \
+  -C farmanetwork \
+  -n Farma-Network \
+  -c '{"Args":["MedicineContract:GetAllMedicines"]}' --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT
+```

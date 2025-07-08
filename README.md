@@ -4,12 +4,16 @@
 
 ```bash
 cd fabric-samples/test-network
+```
+```bash
 ./network.sh up createChannel -c farmanetwork -ca -s couchdb
 ```
 ## Addding org3
 ```bash
 cd addOrg3
 ./addOrg3.sh up -c farmanetwork -ca -s couchdb
+```
+```bash
 cd ..
 ```
 ## Deploy Chaincode

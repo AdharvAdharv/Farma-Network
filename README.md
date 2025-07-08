@@ -20,6 +20,12 @@ cd ..
 ```bash
 ./network.sh deployCC -ccn Farma-Network -ccp ../../FarmaNetwork/Chaincode/ -ccl go -c farmanetwork -cccg ../../FarmaNetwork/Chaincode/collections.json
 ```
+
+## Deploying chaincode with updation
+```bash
+./network.sh deployCC -ccn Farma-Network -ccp ../../FarmaNetwork/Chaincode/ -ccl go -c farmanetwork -ccv 2.0 -ccs 2 -cccg ../../FarmaNetwork/Chaincode/collections.json
+```
+
 ## General Environment variables
 ```bash
 export FABRIC_CFG_PATH=$PWD/../config/

@@ -87,6 +87,46 @@ export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.examp
 
 export CORE_PEER_ADDRESS=localhost:9051
 ```
+## CreateOrder Only Org2
+```bash
+echo -n "{\"medicineName\":\"Paracetamol 500\",\"quantity\":\"100\",\"distributor\":\"HealthCareDist\"}" | base64
+
+```
+```bash
+peer chaincode invoke \
+  -o localhost:7050 \
+  --ordererTLSHostnameOverride orderer.example.com \
+  --tls --cafile $ORDERER_CA \
+  -C farmanetwork \
+  -n Farma-Network \
+  --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT \
+  --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT \
+  --transient "{\"medicineName\":\"UGFyYWNldGFtb2wgNTAw\",\"quantity\":\"MTAw\",\"distributor\":\"SGVhbHRoQ2FyZURpc3Q=\"}" \
+  -c '{"function":"OrderContract:CreateOrder","Args":["ORD-001"]}'
+
+```
+## Read Order by ID
+```bash
+peer chaincode query   -C farmanetwork   -n Farma-Network   -c '{"function":"OrderContract:ReadOrder","Args":["ORD-001"]}'
+```
+## Read all orders
+```bash
+peer chaincode query   -C farmanetwork   -n Farma-Network   -c '{"function":"OrderContract:GetAllOrders","Args":[]}'
+
+```
+## Query Command for GetOrdersByRange
+```bash
+peer chaincode invoke \
+  -o localhost:7050 \
+  --ordererTLSHostnameOverride orderer.example.com \
+  --tls --cafile $ORDERER_CA \
+  -C farmanetwork \
+  -n Farma-Network \
+  --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT \
+  --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT \
+  --transient "{\"medicineName\":\"UGFyYWNldGFtb2wgNTAw\",\"quantity\":\"MTAw\",\"distributor\":\"SGVhbHRoQ2FyZURpc3Q=\"}" \
+  -c '{"function":"OrderContract:GetOrdersByRange","Args":["ORD-001","ORD-002"]}'
+```
 
 ## Environment variables for Org3:
 ```bash
@@ -97,6 +137,27 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org3.e
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
 
 export CORE_PEER_ADDRESS=localhost:11051
+```
+## Invoke Command — Assign Medicine To Pharmacy
+```bash
+peer chaincode invoke \
+  -o localhost:7050 \
+  --ordererTLSHostnameOverride orderer.example.com \
+  --tls --cafile $ORDERER_CA \
+  -C farmanetwork \
+  -n Farma-Network \
+  --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT \
+  --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT \
+   -c '{"function":"PharmacyContract:AssignMedicineToPharmacy","Args":["MED-001","GreenPharmacy","50"]}'
+
+```
+## Query Command — Read Pharmacy Assignment
+```bash
+peer chaincode query \
+  -C farmanetwork \
+  -n Farma-Network \
+  --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT \
+  -c '{"function":"PharmacyContract:ReadPharmacyAssignment","Args":["MED-001"]}'
 ```
 
 ## Query for gell all medicine by ORG-3

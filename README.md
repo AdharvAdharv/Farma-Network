@@ -89,20 +89,27 @@ export CORE_PEER_ADDRESS=localhost:9051
 ```
 ## CreateOrder Only Org2
 ```bash
-echo -n "{\"medicineName\":\"Paracetamol 500\",\"quantity\":\"100\",\"distributor\":\"HealthCareDist\"}" | base64
+ export MEDICINE_NAME=$(echo -n "Dolo-600" | base64 | tr -d \n)                                                   
+export QUANTITY=$(echo -n "400" | base64 | tr -d \n)
+export DISTRIBUTOR=$(echo -n "HealthCareDist" | base64 | tr -d \n)
+
 
 ```
 ```bash
 peer chaincode invoke \
   -o localhost:7050 \
   --ordererTLSHostnameOverride orderer.example.com \
-  --tls --cafile $ORDERER_CA \
+  --tls \
+  --cafile $ORDERER_CA \
   -C farmanetwork \
   -n Farma-Network \
-  --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT \
-  --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT \
-  --transient "{\"medicineName\":\"UGFyYWNldGFtb2wgNTAw\",\"quantity\":\"MTAw\",\"distributor\":\"SGVhbHRoQ2FyZURpc3Q=\"}" \
-  -c '{"function":"OrderContract:CreateOrder","Args":["ORD-001"]}'
+  --peerAddresses localhost:7051 \
+  --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT \
+  --peerAddresses localhost:9051 \
+  --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT \
+  -c '{"Args":["OrderContract:CreateOrder","ORD-04"]}' \
+  --transient "{\"medicineName\":\"$MEDICINE_NAME\",\"quantity\":\"$QUANTITY\",\"distributor\":\"$DISTRIBUTOR\"}"
+
 
 ```
 ## Read Order by ID

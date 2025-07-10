@@ -1,5 +1,45 @@
 # Farma-Network
 
+## 🛠️ Built With
+Hyperledger Fabric (Blockchain Platform)
+
+Go (for Chaincode Development)
+
+Gin Framework (for Backend API)
+
+## 📌 Purpose of the Project
+To track the lifecycle of medicines from manufacturers to pharmacies.
+
+Ensure secure, transparent, and tamper-proof data using blockchain technology.
+
+Avoid issues like data manipulation, price changes, and politics in the pharma supply chain.
+
+## 📌 Why Hyperledger Fabric?
+In normal systems, one party controls the data, leading to risks.
+
+In Fabric:
+
+Every organization has its own peer and a shared, tamper-proof ledger.
+
+No one can secretly change or hide data.
+
+Ensures fairness, security, and trust among all pharma participants.
+
+## 📌 Private Data Collections
+Sensitive info like:
+
+Order quantities
+
+Prices
+
+Distributor details
+
+Are shared only between selected members.
+
+Keeps important data private, secure, and policy-controlled while maintaining overall transparency.
+
+
+
 ## Bring up the Test network
 
 ```bash
